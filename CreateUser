@@ -1,0 +1,28 @@
+-- Done for Azure SQL Database. Please note that Code syntax/usage for normal Sequal Server SQL Database might differ.
+-- https://docs.microsoft.com/en-us/azure/sql-database/sql-database-manage-logins
+-- https://www.youtube.com/watch?v=TW1_9eIIFyU
+
+-- Create User to Azure SQL database
+ 
+-- Switch to Master
+ 
+CREATE LOGIN yourusername WITH PASSWORD='yourpasswordhere'
+GO
+ 
+CREATE USER yourusername FOR LOGIN yourusername WITH DEFAULT_SCHEMA=[dbo]
+ 
+--The user can be an Azure Active Directory authentication contained database user (if you have configured your environment for Azure AD authentication). If not set up then skip this line of code
+ 
+CREATE USER [userid@domain.com] FROM EXTERNAL PROVIDER;
+ 
+--Switch to database
+ 
+CREATE USER yourusername FOR LOGIN yourusername WITH DEFAULT_SCHEMA=[dbo]
+GO
+ 
+EXEC sp_addrolemember 'db_datareader', 'yourusername';
+GO
+EXEC sp_addrolemember 'db_datawriter', 'yourusername';
+GO
+ 
+GRANT EXECTURE ON SCHEMA :: dbo TO yourusername;
